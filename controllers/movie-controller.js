@@ -7,6 +7,7 @@ const User = require('../models/user')
 // require a checkbox. We can just use a specific link to to add it to the right
 // list.
 router.post('/', async (req, res, next) => {
+	res.send('hey')
 	try {
 		console.log(req.body, ' This is req.body');
 		const newMovie = {
@@ -43,6 +44,19 @@ router.post('/', async (req, res, next) => {
 	}
 })
 
+router.get('/', async (req, res) => {
+	try {
+		const movies = await fetch('http://api-public.guidebox.com/v2/search?api_key=7eec0384545005656d8702d02413111dbd7d6f1b&type=movie&field=title&query=Terminator');
+		
+        const moviesJson = await movies.json();
+        JSON.stringify(moviesJson);
+        console.log(moviesJson, '<------------jsonified');
+		res.send(moviesJson);
+
+	} catch(err){
+		res.send(err)
+	}
+})
 // This will be the movie show route. Once we show it we can choose to edit it.
 router.get('/:id', async (req, res, next) => {
 	try {

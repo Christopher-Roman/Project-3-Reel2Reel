@@ -1,6 +1,5 @@
 const express = require('express');
 const router = express.Router();
-const Movie = require('../models/movie')
 const User = require('../models/user')
 
 // This is the post route to add a new movie to the user's lists depending
@@ -46,3 +45,5 @@ router.post('/', async (req, res, next) => {
 
 
 module.exports = router;
+
+

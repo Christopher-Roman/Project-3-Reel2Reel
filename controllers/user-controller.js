@@ -5,7 +5,7 @@ const Movie = require('../models/movie')
 
 // This is the show route for the user's profile. It will display all of the movies
 // that the user has in all of their lists of movies.
-router.get('/', async (req, res, next) => {
+router.get('/', async (req, res) => {
 	try {
 		res.send('Did this work?')
 		const displayWatchList = await User.watchList.find();
@@ -35,3 +35,5 @@ router.get('/', async (req, res, next) => {
 // })
 
 module.exports = router;
+
+

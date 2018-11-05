@@ -26,7 +26,8 @@ app.use(cors(corsOptions));
 const movieController = require('./controllers/movie-controller')
 const userController = require('./controllers/user-controller')
 
-// app.use('/api/v2')
+app.use('/user', userController)
+//app.use('/api/v2/', movieController)
 // app.use('/auth/login')
 
 app.listen(process.env.PORT || 9000, () => {

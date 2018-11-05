@@ -43,7 +43,51 @@ router.post('/', async (req, res, next) => {
 	}
 })
 
+// This will be the movie show route. Once we show it we can choose to edit it.
+router.get('/:id', async (req, res, next) => {
+	try {
+		const foundMovie = await Movie.findById(req.params.id);
+		res.json({
+			status: 200,
+			data: foundMovie
+		})
+	} catch(err) {
+		res.send(err)
+	}
+})
+
+// This will be the put route to edit movies
+router.put('/:id', async (req, res, next) => {
+	try {
+		const newMovie = {
+			title: req.body.title,
+			genre: req.body.genre,
+			runtime: req.body.runTime,
+			director: req.body.director,
+			img: req.body.img
+		}
+		const updatedMovie = await Movie.findByIdAndUpdate(req.params.id, newMovie, {new: true})
+		res.json({
+			status: 200,
+			data: updatedMovie
+		})
+	} catch(err) {
+		res.send(err)
+	}
+})
+
+// This will be our Delete Route
+router.delete('/:id', async (req, res) => {
+	try {
+		const deletedMovie = await Movie.findByIdAndRemove(req.params.id)
+		res.json({
+			status: 200,
+			data: deletedMovie
+		})
+	} catch(err) {
+		res.send(err)
+	}
+})
+
 
 module.exports = router;
-
-

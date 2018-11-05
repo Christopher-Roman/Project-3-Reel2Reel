@@ -27,6 +27,7 @@ const movieController = require('./controllers/movie-controller')
 const userController = require('./controllers/user-controller')
 
 app.use('/user', userController)
+app.use('/movie', movieController)
 //app.use('/api/v2/', movieController)
 // app.use('/auth/login')
 

@@ -2,6 +2,7 @@ const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
 const cors = require('cors');
+const User = require('./models/user');
 // const session = require('express-session')
 
 require('./db/db');

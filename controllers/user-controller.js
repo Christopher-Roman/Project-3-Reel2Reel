@@ -9,8 +9,20 @@ const User = require('../model/user')
 // that the user has in all of their lists of movies.
 router.get('/', async (req, res) => {
 	try {
+<<<<<<< Updated upstream
 		const getMovies = await fetch('http://www.omdbapi.com/?t=kung_pow&apikey=480e3e2e');
 		console.log(getMovies);
+=======
+		//set it up so user can only change the movie/show ID in the api get request
+		const movies = await fetch('http://api-public.guidebox.com/v2/movies/135934?api_key=7eec0384545005656d8702d02413111dbd7d6f1b');
+        const moviesJson = await movies.json();
+        JSON.stringify(moviesJson);
+        console.log(moviesJson.title, '<------------jsonified');
+		res.send(moviesJson.title);
+		// res.send(moviesJson.title);
+        // return moviesJson;
+		
+>>>>>>> Stashed changes
 		const displayWatchList = await User.watchList.find();
 		const displayFavMovies = await User.favMovies.find();
 		const displayOwnedMovies = await User.ownedMovies.find();

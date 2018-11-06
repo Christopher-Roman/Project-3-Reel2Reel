@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 
-router.post('/', async (req, res) => {
+router.post('/login', async (req, res) => {
 	console.log(req.body, ' This is session');
 	try {
 		req.session.logged = true;

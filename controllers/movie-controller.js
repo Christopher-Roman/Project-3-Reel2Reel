@@ -43,18 +43,25 @@ router.post('/', async (req, res, next) => {
 		console.log(err);
 	}
 })
+// search route
+router.get('/search', async (req, res) => {
+	// req.query
+	console.log("---------------------------------");
+	console.log(req.query);
+	console.log("---------------------------------");
 
-router.get('/', async (req, res) => {
+
+
 	try {
-		const movies = await fetch('http://api-public.guidebox.com/v2/search?api_key=7eec0384545005656d8702d02413111dbd7d6f1b&type=movie&field=title&query=Terminator');
-		
+		const searchQuery = req.query.searchTerm
+		const movies = await fetch('http://api-public.guidebox.com/v2/search?api_key=7eec0384545005656d8702d02413111dbd7d6f1b&type=movie&field=title&query=' + searchQuery);
         const moviesJson = await movies.json();
         JSON.stringify(moviesJson);
         console.log(moviesJson, '<------------jsonified');
-		res.send(moviesJson);
+		res.json(moviesJson);
 
 	} catch(err){
-		res.send(err)
+		res.json(err)
 	}
 })
 // This will be the movie show route. Once we show it we can choose to edit it.

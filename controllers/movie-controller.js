@@ -2,14 +2,14 @@ const express = require('express');
 const router = express.Router();
 const User = require('../models/user')
 const request = require('request')
+const apiKey = require('../apiKey')
 
 
 // This will be our search request get call
-router.get('/', async (req, res, next) => {
-	const searchPhrase = req.body.search
-	const searchResult = await fetch('http://api-public.guidebox.com/v2/search?api_key=7eec0384545005656d8702d02413111dbd7d6f1b&type=movie&field=title&query=' + searchPhrase)
-
-})
+// router.get('/', async (req, res, next) => {
+// 	const searchPhrase = req.body.search
+// 	const searchResult = await fetch('http://api-public.guidebox.com/v2/search?api_key=' + apiKey + '&type=movie&field=title&query=' + searchPhrase)
+// })
 
 // This is the post route to add a new movie to the user's lists depending
 // on which box is checked. I think there will be a way to change this so it won't

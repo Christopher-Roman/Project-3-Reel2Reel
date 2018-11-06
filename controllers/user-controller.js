@@ -1,26 +1,17 @@
 const express = require('express');
 const router = express.Router();
-const Movie = require('../models/movie')
-const fetch = require('isomorphic-fetch');
-// const User = require('/models/user')
+const User = require('../models/user')
 
 
 // This is the show route for the user's profile. It will display all of the movies
 // that the user has in all of their lists of movies.
-router.get('/', async (req, res) => {
+router.get('/', async (req, res, next) => {
+	console.log(req.body, ' this is req.body for get all');
 	try {
-		
-        // return moviesJson;
-		
-		const displayWatchList = await User.watchList.find();
-		const displayFavMovies = await User.favMovies.find();
-		const displayOwnedMovies = await User.ownedMovies.find();
-
+		const user = await User.find()
 		res.json({
 			status: 200,
-			data1: displayWatchList, 
-			data2: displayFavMovies, 
-			data3: displayOwnedMovies
+			data: displayWatchList
 			})
 
 	} catch(err) {

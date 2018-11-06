@@ -21,7 +21,7 @@ router.get('/', async (req, res) => {
 			data1: displayWatchList, 
 			data2: displayFavMovies, 
 			data3: displayOwnedMovies
-			})
+		})
 
 	} catch(err) {
 		console.log(err);

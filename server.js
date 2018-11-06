@@ -26,9 +26,11 @@ app.use(cors(corsOptions));
 
 const movieController = require('./controllers/movie-controller')
 const userController = require('./controllers/user-controller')
+const authController = require('./controllers/auth-controller')
 
 app.use('/user', userController)
 app.use('/movie', movieController)
+app.use('/auth/login', authController)
 //app.use('/api/v2/', movieController)
 // app.use('/auth/login')
 

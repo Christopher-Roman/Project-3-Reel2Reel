@@ -1,16 +1,12 @@
-<<<<<<< HEAD
-<<<<<<< Updated upstream
-=======
+
 const express = require('express');
 const router = express.Router();
 const User = require('../model/user')
-=======
 const express = require('express');
 const router = express.Router();
 const Movie = require('../models/movie')
 const fetch = require('isomorphic-fetch');
 // const User = require('/models/user')
->>>>>>> e1858d508bf997c3aa442d96fae2cc5db6aa6809
 
 
 // This is the show route for the user's profile. It will display all of the movies

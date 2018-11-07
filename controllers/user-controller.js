@@ -13,6 +13,10 @@ router.get('/', async (req, res, next) => {
 			status: 200,
 			data: displayWatchList
 			})
+			data1: displayWatchList, 
+			data2: displayFavMovies, 
+			data3: displayOwnedMovies
+		})
 
 	} catch(err) {
 		console.log(err);

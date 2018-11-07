@@ -2,6 +2,15 @@ const express = require('express');
 
 const router = express.Router();
 const User = require('../models/user')
+const request = require('request')
+const apiKey = require('../apiKey')
+
+
+// This will be our search request get call
+// router.get('/', async (req, res, next) => {
+// 	const searchPhrase = req.body.search
+// 	const searchResult = await fetch('http://api-public.guidebox.com/v2/search?api_key=' + apiKey + '&type=movie&field=title&query=' + searchPhrase)
+// })
 
 
 const Movie = require('../models/movie-controller');
@@ -28,7 +37,8 @@ router.post('/', async (req, res, next) => {
 		}
 		if(req.body.watchList === 'on') {
 			const addWatchList = await Movie.create(newMovie);
-			user.watchList.push(addWatchList)
+			User.watchList.push(addWatchList)
+			User.save()
 			res.json({
 				status: 200,
 				data: addWatchList
@@ -36,6 +46,7 @@ router.post('/', async (req, res, next) => {
 		} else if(req.body.favMovie === 'on') {
 			const addFavMovie = await Movie.create(newMovie);
 			user.favMovies.push(addFavMovie)
+		 User.save()
 			res.json({
 				status: 200,
 				data: addFavMovie
@@ -43,6 +54,7 @@ router.post('/', async (req, res, next) => {
 		} else if(req.body.ownedMovies === 'on') {
 			const addOwnedMovie = await Movie.create(newMovie);
 			user.ownedMovies.push(addOwnedMovie)
+		 User.save()
 			res.json({
 				status: 200,
 				data: addOwnedMovie

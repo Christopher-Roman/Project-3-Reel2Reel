@@ -7,7 +7,7 @@ const userSchema = new mongoose.Schema({
     name: {
     	type: String,
     	required: true
-    },
+    	},
     watchList: [Movie.schema],
     favMovies: [Movie.schema],
     ownedMovies: [Movie.schema]

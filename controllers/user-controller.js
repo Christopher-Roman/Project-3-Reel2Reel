@@ -4,15 +4,15 @@ const router = express.Router();
 const User = require('../model/user')
 const express = require('express');
 const router = express.Router();
-const Movie = require('../models/movie')
-const fetch = require('isomorphic-fetch');
-// const User = require('/models/user')
+const User = require('../models/user')
 
 
 // This is the show route for the user's profile. It will display all of the movies
 // that the user has in all of their lists of movies.
-router.get('/', async (req, res) => {
+router.get('/', async (req, res, next) => {
+	console.log(req.body, ' this is req.body for get all');
 	try {
+<<<<<<< HEAD
 
 		const getMovies = await fetch('http://www.omdbapi.com/?t=kung_pow&apikey=480e3e2e');
 		console.log(getMovies);
@@ -31,8 +31,13 @@ router.get('/', async (req, res) => {
 		const displayFavMovies = await User.favMovies.find();
 		const displayOwnedMovies = await User.ownedMovies.find();
 
+=======
+		const user = await User.find()
+>>>>>>> ad8f39d0654ebc430c8ef414bef963a1bb7e3dff
 		res.json({
 			status: 200,
+			data: displayWatchList
+			})
 			data1: displayWatchList, 
 			data2: displayFavMovies, 
 			data3: displayOwnedMovies

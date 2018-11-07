@@ -2,7 +2,8 @@ const express = require('express');
 const router = express.Router();
 const User = require('../models/user')
 
-router.post('/', async (req, res) => {
+// register
+router.post('/register', async (req, res) => {
 	try {
 		const newUser = {};
 		newUser.name = req.body.name;
@@ -11,20 +12,47 @@ router.post('/', async (req, res) => {
 		newUser.watchList = [];
 		newUser.favMovies = [];
 		newUser.ownedMovies = [];
+
 		console.log(newUser);
-		const user = User.create(newUser);
+
+		// TODO: test to see if a user with that username exists
+
+		const user = await User.create(newUser);
+		
+
 		console.log(user);
-		user.save();
-		req.session.logged = true;
+		
 		req.session.username = req.body.username;
+		req.session.logged = true;
+		
 
 		res.json({
 			status: 200,
-			data: 'Login Successful'
+			data: user
 		})
 	} catch(err) {
 		res.send(err)
 	}
 })
+
+// login route  POST /login -- 
+	// retrieve user with the username in req.body, set session logged in with that user
+router.post('/login', async (req, res) => {
+	try {
+		console.log(req.body, "this is req.body");
+		const findUser = await User.find({username: req.body.loginUsername})
+		console.log(findUser, "this is the user we found");
+		req.session.username = req.body.loginUsername;
+		req.session.logged = true;
+		console.log(req.session);
+		res.json({
+			status: 200,
+			data: findUser
+		})
+	} catch(err) {
+		res.send(err)
+	}
+})
+
 
 module.exports = router;

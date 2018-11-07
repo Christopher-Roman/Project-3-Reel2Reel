@@ -1,21 +1,35 @@
 const express = require('express');
 const app = express();
+const methodOverride = require('method-override')
 const bodyParser = require('body-parser');
 const cors = require('cors');
-const User = require('./models/user');
 const session = require('express-session')
 
+// Models
+const Movie = require('./models/movie')
+const User = require('./models/user');
+
+// Controllers
+const movieController = require('./controllers/movie-controller')
+const userController = require('./controllers/user-controller')
+const authController = require('./controllers/auth-controller')
+
+// Database
 require('./db/db');
 
+// Sessions
 app.use(session({
-  secret: 'keyboard cat',
+  secret: 'Hope this works',
   resave: false,
   saveUninitialized: false
 }))
 
+// Middleware
 app.use(bodyParser.urlencoded({extended: false}));
+app.use(methodOverride('_method'))
 app.use(bodyParser.json())
 
+// Cors
 const corsOptions = {
 	origin: 'http://localhost:3000',
 	credentials: true,
@@ -24,13 +38,10 @@ const corsOptions = {
 
 app.use(cors(corsOptions));
 
-const movieController = require('./controllers/movie-controller')
-const userController = require('./controllers/user-controller')
-const authController = require('./controllers/auth-controller')
-
+// Routes
 app.use('/user', userController)
 app.use('/movie', movieController)
-app.use('/auth/login', authController)
+app.use('/auth', authController)
 
 app.listen(process.env.PORT || 9000, () => {
 	console.log('listening on port 9000');

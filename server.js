@@ -1,8 +1,9 @@
-const express        = require('express');
-const app            = express();
-const bodyParser     = require('body-parser');
-const cors           = require('cors');
-// const session        = require('express-session')
+const express = require('express');
+const app = express();
+const bodyParser = require('body-parser');
+const cors = require('cors');
+const User = require('./models/user');
+// const session = require('express-session')
 
 require('./db/db');
 
@@ -23,8 +24,14 @@ const corsOptions = {
 
 app.use(cors(corsOptions));
 
-// app.use('/api')
-// app.use('/auth/login')
+const movieController = require('./controllers/movie-controller')
+const userController = require('./controllers/user-controller')
+const authController = require('./controllers/auth-controller')
+
+app.use('/user', userController)
+app.use('/movie', movieController)
+//app.use('/api/v2/', movieController)
+app.use('/auth', authController);
 
 app.listen(process.env.PORT || 9000, () => {
 	console.log('listening on port 9000');

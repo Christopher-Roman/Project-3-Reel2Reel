@@ -1,8 +1,8 @@
 const express = require('express');
 const router = express.Router();
 const User = require('../models/user')
-const request = require('request')
-const apiKey = require('../apiKey')
+// const request = require('request')
+// const apiKey = require('../apiKey')
 
 
 // This will be our search request get call

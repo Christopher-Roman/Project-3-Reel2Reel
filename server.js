@@ -3,15 +3,15 @@ const app = express();
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const User = require('./models/user');
-// const session = require('express-session')
+const session = require('express-session')
 
 require('./db/db');
 
-// app.use(session({
-//   secret: 'keyboard cat',
-//   resave: false,
-//   saveUninitialized: false
-// }))
+app.use(session({
+  secret: 'keyboard cat',
+  resave: false,
+  saveUninitialized: false
+}))
 
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json())
@@ -31,8 +31,6 @@ const authController = require('./controllers/auth-controller')
 app.use('/user', userController)
 app.use('/movie', movieController)
 app.use('/auth/login', authController)
-//app.use('/api/v2/', movieController)
-// app.use('/auth/login')
 
 app.listen(process.env.PORT || 9000, () => {
 	console.log('listening on port 9000');

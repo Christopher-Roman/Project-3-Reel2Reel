@@ -1,6 +1,30 @@
 const express = require('express');
 const router = express.Router();
 const User = require('../models/user')
+const Movie = require('../models/movie')
+
+// search route
+router.get('/search', async (req, res) => {
+	console.log('Route is being hit');
+	// req.query
+	console.log("---------------------------------");
+	console.log(req.query);
+	console.log("---------------------------------");
+	try {
+		console.log("Hi Daddy-o")
+		const searchQuery = req.query.searchTerm
+		console.log('http://api-public.guidebox.com/v2/search?api_key=7eec0384545005656d8702d02413111dbd7d6f1b&type=movie&field=title&query=' + searchQuery)
+		const movies = await fetch('http://api-public.guidebox.com/v2/search?api_key=7eec0384545005656d8702d02413111dbd7d6f1b&type=movie&field=title&query=' + searchQuery);
+        console.log(movies)
+        const moviesJson = await movies.json();
+        JSON.stringify(moviesJson);
+        console.log(moviesJson, '<------------jsonified');
+		res.json(moviesJson);
+
+	} catch(err){
+		res.json(err)
+	}
+})
 
 // This is the post route to add a new movie to the user's lists depending
 // on which box is checked. I think there will be a way to change this so it won't
@@ -44,25 +68,6 @@ router.post('/', async (req, res, next) => {
 		}
 	} catch(err) {
 		console.log(err);
-	}
-})
-// search route
-router.get('/search', async (req, res) => {
-	console.log('Route is being hit');
-	// req.query
-	console.log("---------------------------------");
-	console.log(req.query);
-	console.log("---------------------------------");
-	try {
-		const searchQuery = req.query.searchTerm
-		const movies = await fetch('http://api-public.guidebox.com/v2/search?api_key=7eec0384545005656d8702d02413111dbd7d6f1b&type=movie&field=title&query=' + searchQuery);
-        const moviesJson = await movies.json();
-        JSON.stringify(moviesJson);
-        console.log(moviesJson, '<------------jsonified');
-		res.json(moviesJson);
-
-	} catch(err){
-		res.json(err)
 	}
 })
 

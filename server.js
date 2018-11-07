@@ -1,3 +1,5 @@
+require('es6-promise').polyfill();
+require('isomorphic-fetch');
 const express = require('express');
 const app = express();
 const methodOverride = require('method-override')

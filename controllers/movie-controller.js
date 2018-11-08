@@ -2,23 +2,16 @@ const express = require('express');
 const router = express.Router();
 const User = require('../models/user')
 const Movie = require('../models/movie')
+require('dotenv').config();
 
 // search route
 router.get('/search', async (req, res) => {
-	console.log('Route is being hit');
-	// req.query
-	console.log("---------------------------------");
-	console.log(req.query);
-	console.log("---------------------------------");
 	try {
-		console.log("Hi Daddy-o")
 		const searchQuery = req.query.searchTerm
-		console.log('http://api-public.guidebox.com/v2/search?api_key=7eec0384545005656d8702d02413111dbd7d6f1b&type=movie&field=title&query=' + searchQuery)
-		const movies = await fetch('http://api-public.guidebox.com/v2/search?api_key=7eec0384545005656d8702d02413111dbd7d6f1b&type=movie&field=title&query=' + searchQuery);
+		const movies = await fetch('http://api-public.guidebox.com/v2/search?api_key=' + process.env.API_KEY + '&type=movie&field=title&query=' + searchQuery);
         console.log(movies)
         const moviesJson = await movies.json();
         JSON.stringify(moviesJson);
-        console.log(moviesJson, '<------------jsonified');
 		res.json(moviesJson);
 
 	} catch(err){

@@ -30,46 +30,100 @@ router.get('/search', async (req, res) => {
 // on which box is checked. I think there will be a way to change this so it won't
 // require a checkbox. We can just use a specific link to to add it to the right
 // list.
-router.post('/', async (req, res, next) => {
-	res.send('hey')
-	try {
-		console.log(req.body, ' This is req.body');
-		const newMovie = {
-			title: req.body.title,
-			genre: req.body.genre,
-			runtime: req.body.runTime,
-			director: req.body.director,
-			img: req.body.img
-		}
-		if(req.body.watchList === 'on') {
-			const addWatchList = await Movie.create(newMovie);
-			User.watchList.push(addWatchList)
-			User.save()
-			res.json({
-				status: 200,
-				data: addWatchList
-			})
-		} else if(req.body.favMovie === 'on') {
-			const addFavMovie = await Movie.create(newMovie);
-			user.favMovies.push(addFavMovie)
-		 User.save()
-			res.json({
-				status: 200,
-				data: addFavMovie
-			})
-		} else if(req.body.ownedMovies === 'on') {
-			const addOwnedMovie = await Movie.create(newMovie);
-			user.ownedMovies.push(addOwnedMovie)
-		 User.save()
-			res.json({
-				status: 200,
-				data: addOwnedMovie
-			})
-		}
-	} catch(err) {
-		console.log(err);
+
+// each route POST or /whateverlist/:id
+// does this exist?
+// if not create it
+// push into whatever
+
+// Watchlist POST Route
+router.post('/watchList/:id', async (req, res, next) => {
+	// Creating a new movie Object from req.body
+	const newMovie = {};
+	newMovie.title = req.body.title;
+	newMovie.movieId = req.body.movieId;
+	newMovie.releaseDate = req.body.releaseDate;
+	newMovie.img = req.body.img
+
+	// Finding out if the movie you are trying to add already exists
+	const foundMovie = await Movie.findOne({movieId: newMovie.movieId})
+	// Finding the user that we are trying to add the movie to
+	const foundUser = await User.findOne({username: req.session.username})
+	console.log(foundUser);
+	// Logic to create the new movie if it doesn't exist or add it form the db
+	// to the current user if it does exist
+	if(!foundMovie){
+		console.log(newMovie);
+		const movieToCreate = await Movie.create(newMovie)
+		res.json(movieToCreate)
+		foundUser.watchList.push(movieToCreate)
+		await foundUser.save()
+	} else {
+		foundUser.watchList.push(foundMovie);
+
+		await foundUser.save();
+		res.json(foundMovie)
 	}
 })
+
+// FavMovies POST Route
+router.post('/favMovies/:id', async (req, res, next) => {
+	// Creating a new movie Object from req.body
+	const newMovie = {};
+	newMovie.title = req.body.title;
+	newMovie.movieId = req.body.movieId;
+	newMovie.releaseDate = req.body.releaseDate;
+	newMovie.img = req.body.img
+
+	// Finding out if the movie you are trying to add already exists
+	const foundMovie = await Movie.findOne({movieId: newMovie.movieId})
+	// Finding the user that we are trying to add the movie to
+	const foundUser = await User.findOne({username: req.session.username})
+	console.log(foundUser);
+	// Logic to create the new movie if it doesn't exist or add it form the db
+	// to the current user if it does exist
+	if(!foundMovie){
+		console.log(newMovie);
+		const movieToCreate = await Movie.create(newMovie)
+		res.json(movieToCreate)
+		foundUser.favMovies.push(movieToCreate)
+		await foundUser.save()
+	} else {
+		foundUser.favMovies.push(foundMovie);
+		await foundUser.save();
+		res.json(foundMovie)
+	}
+})
+
+// ownedMovies POST Route
+router.post('/ownedMovies/:id', async (req, res, next) => {
+	// Creating a new movie Object from req.body
+	const newMovie = {};
+	newMovie.title = req.body.title;
+	newMovie.movieId = req.body.movieId;
+	newMovie.releaseDate = req.body.releaseDate;
+	newMovie.img = req.body.img
+
+	// Finding out if the movie you are trying to add already exists
+	const foundMovie = await Movie.findOne({movieId: newMovie.movieId})
+	// Finding the user that we are trying to add the movie to
+	const foundUser = await User.findOne({username: req.session.username})
+	console.log(foundUser);
+	// Logic to create the new movie if it doesn't exist or add it form the db
+	// to the current user if it does exist
+	if(!foundMovie){
+		console.log(newMovie);
+		const movieToCreate = await Movie.create(newMovie)
+		res.json(movieToCreate)
+		foundUser.ownedMovies.push(movieToCreate)
+		await foundUser.save()
+	} else {
+		foundUser.ownedMovies.push(foundMovie);
+		await foundUser.save();
+		res.json(foundMovie)
+	}
+})
+
 
 // This will be the movie show route. Once we show it we can choose to edit it.
 router.get('/:id', async (req, res, next) => {
@@ -85,24 +139,24 @@ router.get('/:id', async (req, res, next) => {
 })
 
 // This will be the put route to edit movies
-router.put('/:id', async (req, res, next) => {
-	try {
-		const newMovie = {
-			title: req.body.title,
-			genre: req.body.genre,
-			runtime: req.body.runTime,
-			director: req.body.director,
-			img: req.body.img
-		}
-		const updatedMovie = await Movie.findByIdAndUpdate(req.params.id, newMovie, {new: true})
-		res.json({
-			status: 200,
-			data: updatedMovie
-		})
-	} catch(err) {
-		res.send(err)
-	}
-})
+// router.put('/:id', async (req, res, next) => {
+// 	try {
+// 		const newMovie = {
+// 			title: req.body.title,
+// 			genre: req.body.genre,
+// 			runtime: req.body.runTime,
+// 			director: req.body.director,
+// 			img: req.body.img
+// 		}
+// 		const updatedMovie = await Movie.findByIdAndUpdate(req.params.id, newMovie, {new: true})
+// 		res.json({
+// 			status: 200,
+// 			data: updatedMovie
+// 		})
+// 	} catch(err) {
+// 		res.send(err)
+// 	}
+// })
 
 // This will be our Delete Route
 router.delete('/:id', async (req, res) => {

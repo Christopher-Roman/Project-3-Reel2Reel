@@ -7,6 +7,7 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const session = require('express-session')
 
+
 // Models
 const Movie = require('./models/movie')
 const User = require('./models/user');

@@ -13,14 +13,9 @@ router.post('/register', async (req, res) => {
 		newUser.favMovies = [];
 		newUser.ownedMovies = [];
 
-		console.log(newUser);
-
 		// TODO: test to see if a user with that username exists
 
 		const user = await User.create(newUser);
-		
-
-		console.log(user);
 		
 		req.session.username = req.body.username;
 		req.session.logged = true;
@@ -28,7 +23,7 @@ router.post('/register', async (req, res) => {
 
 		res.json({
 			status: 200,
-			data: user
+			data: newUser
 		})
 	} catch(err) {
 		res.send(err)
@@ -39,12 +34,9 @@ router.post('/register', async (req, res) => {
 	// retrieve user with the username in req.body, set session logged in with that user
 router.post('/login', async (req, res) => {
 	try {
-		console.log(req.body, "this is req.body");
 		const findUser = await User.find({username: req.body.loginUsername})
-		console.log(findUser, "this is the user we found");
 		req.session.username = req.body.loginUsername;
 		req.session.logged = true;
-		console.log(req.session);
 		res.json({
 			status: 200,
 			data: findUser

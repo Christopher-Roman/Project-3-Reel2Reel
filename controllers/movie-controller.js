@@ -9,7 +9,6 @@ router.get('/search', async (req, res) => {
 	try {
 		const searchQuery = req.query.searchTerm
 		const movies = await fetch('http://api-public.guidebox.com/v2/search?api_key=' + process.env.API_KEY + '&type=movie&field=title&query=' + searchQuery);
-        console.log(movies)
         const moviesJson = await movies.json();
         JSON.stringify(moviesJson);
 		res.json(moviesJson);
@@ -42,11 +41,9 @@ router.post('/watchList/:id', async (req, res, next) => {
 	const foundMovie = await Movie.findOne({movieId: newMovie.movieId})
 	// Finding the user that we are trying to add the movie to
 	const foundUser = await User.findOne({username: req.session.username})
-	console.log(foundUser);
 	// Logic to create the new movie if it doesn't exist or add it form the db
 	// to the current user if it does exist
 	if(!foundMovie){
-		console.log(newMovie);
 		const movieToCreate = await Movie.create(newMovie)
 		res.json(movieToCreate)
 		foundUser.watchList.push(movieToCreate)
@@ -72,11 +69,9 @@ router.post('/favMovies/:id', async (req, res, next) => {
 	const foundMovie = await Movie.findOne({movieId: newMovie.movieId})
 	// Finding the user that we are trying to add the movie to
 	const foundUser = await User.findOne({username: req.session.username})
-	console.log(foundUser);
 	// Logic to create the new movie if it doesn't exist or add it form the db
 	// to the current user if it does exist
 	if(!foundMovie){
-		console.log(newMovie);
 		const movieToCreate = await Movie.create(newMovie)
 		res.json(movieToCreate)
 		foundUser.favMovies.push(movieToCreate)
@@ -101,11 +96,9 @@ router.post('/ownedMovies/:id', async (req, res, next) => {
 	const foundMovie = await Movie.findOne({movieId: newMovie.movieId})
 	// Finding the user that we are trying to add the movie to
 	const foundUser = await User.findOne({username: req.session.username})
-	console.log(foundUser);
 	// Logic to create the new movie if it doesn't exist or add it form the db
 	// to the current user if it does exist
 	if(!foundMovie){
-		console.log(newMovie);
 		const movieToCreate = await Movie.create(newMovie)
 		res.json(movieToCreate)
 		foundUser.ownedMovies.push(movieToCreate)
@@ -121,7 +114,7 @@ router.post('/ownedMovies/:id', async (req, res, next) => {
 // This will be the movie show route. Once we show it we can choose to edit it.
 router.get('/:id', async (req, res, next) => {
 	try {
-		const foundMovie = await Movie.findById(req.params.id);
+		const foundMovie = await Movie.findOne({movieId: req.params.id});
 		res.json({
 			status: 200,
 			data: foundMovie
@@ -131,33 +124,52 @@ router.get('/:id', async (req, res, next) => {
 	}
 })
 
-// This will be the put route to edit movies
-// router.put('/:id', async (req, res, next) => {
-// 	try {
-// 		const newMovie = {
-// 			title: req.body.title,
-// 			genre: req.body.genre,
-// 			runtime: req.body.runTime,
-// 			director: req.body.director,
-// 			img: req.body.img
-// 		}
-// 		const updatedMovie = await Movie.findByIdAndUpdate(req.params.id, newMovie, {new: true})
-// 		res.json({
-// 			status: 200,
-// 			data: updatedMovie
-// 		})
-// 	} catch(err) {
-// 		res.send(err)
-// 	}
-// })
+
 
 // This will be our Delete Route
-router.delete('/:id', async (req, res) => {
+router.delete('/deleteWatchList/:id', async (req, res) => {
 	try {
-		const deletedMovie = await Movie.findByIdAndRemove(req.params.id)
+		const foundUser = await User.findOne({username: req.session.username})
+		foundUser.watchList.splice(foundUser.watchList.findIndex((movie) => {
+			return movie.movieId === req.params.id;
+		}), 1);
+		await foundUser.save()
 		res.json({
 			status: 200,
 			data: deletedMovie
+		})
+	} catch(err) {
+		res.send(err)
+	}
+})
+
+// This will be our Delete Route
+router.delete('/deleteOwnedMovie/:id', async (req, res) => {
+	try {
+		const foundUser = await User.findOne({username: req.session.username})
+		foundUser.ownedMovies.splice(foundUser.ownedMovies.findIndex((movie) => {
+			return movie.movieId === req.params.id;
+		}), 1);
+		await foundUser.save()
+		res.json({
+			status: 200,
+			data: deletedMovie
+		})
+	} catch(err) {
+		res.send(err)
+	}
+})
+
+// This will be our Delete Route
+router.delete('/deleteFavMovie/:id', async (req, res) => {
+	try {
+		const foundUser = await User.findOne({username: req.session.username})
+		foundUser.favMovies.splice(foundUser.favMovies.findIndex((movie) => {
+			return movie.movieId === req.params.id;
+		}), 1);
+		await foundUser.save()
+		res.json({
+			status: 200
 		})
 	} catch(err) {
 		res.send(err)

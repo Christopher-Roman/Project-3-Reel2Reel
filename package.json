@@ -20,7 +20,7 @@
     "method-override": "^3.0.0",
     "mongoose": "^5.3.8",
     "node-fetch": "^2.2.1",
-    "nodemon": "^1.18.5",
+    "nodemon": "^2.0.17",
     "request": "^2.88.0",
     "session": "^0.1.0"
   }
